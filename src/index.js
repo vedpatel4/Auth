@@ -1,13 +1,13 @@
 const express = require("express");
-const app = express();
-const PORT = process.env.PORT || 3000;
 const connectDB = require("./database/db");
-require("dotenv").config();
+const app = express();
+require("dotenv").config({ path: '../.env' });
+const PORT = process.env.PORT || 3000;
+const userRouter = require("./routes/userRouters.js");
+
 connectDB();
 
-app.get("/", (req, res) => {
-    res.send("<h2>It's Working!</h2>");
-});
+app.use("/", userRouter);
 
 app.listen(PORT, () => {
     console.log(`API is listening on port ${PORT}`);
