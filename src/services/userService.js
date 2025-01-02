@@ -17,7 +17,7 @@ const login = async (email, password) => {
     }
 };
 
-const register = async (email, password, name) => {
+const register = async (email, password, username) => {
     try {
         const existingUser = await User.findOne({ email });
         if (existingUser) {
@@ -27,7 +27,7 @@ const register = async (email, password, name) => {
         const newUser = new User({
             email,
             password: hashedPassword,
-            name
+            username
         });
         await newUser.save();
         return newUser;

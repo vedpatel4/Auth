@@ -11,7 +11,7 @@ const validateLogin = [
 const validateRegister = [
     check('email').isEmail().withMessage('Please enter a valid email').normalizeEmail(),
     check('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long').trim().escape(),
-    check('name').not().isEmpty().withMessage('Name is required').trim().escape()
+    check('username').not().isEmpty().withMessage('Username is required').matches(/^[a-zA-Z0-9]+$/).withMessage('Username must not contain spaces or special characters').trim().escape()
 ];
 
 router.post('/login', validateLogin, (req, res) => {
