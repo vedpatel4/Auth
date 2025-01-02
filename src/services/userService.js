@@ -5,15 +5,15 @@ const login = async (email, password) => {
     try {
         const user = await User.findOne({ email });
         if (!user) {
-            return null;
+            return null; // User not found
         }
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return null;
+            return null; // Password does not match
         }
-        return user;
+        return user; // Login successful
     } catch (err) {
-        throw err;
+        throw err; // Propagate error
     }
 };
 
@@ -23,6 +23,10 @@ const register = async (email, password, username) => {
         if (existingUser) {
             throw new Error('User already exists');
         }
+        const existingUserByUsername = await User.findOne({ username });
+        if (existingUserByUsername) {
+            throw new Error('Username is already taken');
+        }
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = new User({
             email,
@@ -30,9 +34,9 @@ const register = async (email, password, username) => {
             username
         });
         await newUser.save();
-        return newUser;
+        return newUser; // Registration successful
     } catch (err) {
-        throw err;
+        throw err; // Propagate error
     }
 };
 

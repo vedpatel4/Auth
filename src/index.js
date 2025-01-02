@@ -6,9 +6,12 @@ const userRouter = require("./routes/userRouters.js");
 const bodyParser = require('body-parser');
 require("dotenv").config({ path: '../.env' });
 
+// Connect to the database
 connectDB();
 
+// Middleware to parse JSON bodies
 app.use(bodyParser.json());
+
 app.use("/", userRouter);
 
 app.listen(PORT, () => {

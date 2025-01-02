@@ -20,7 +20,13 @@ const register = async (req, res) => {
         const user = await userService.register(email, password, username);
         res.status(201).json({ message: 'User registered successfully', user });
     } catch (err) {
-        res.status(500).json({ error: 'Internal server error' });
+        if (err.message === 'User already exists') {
+            res.status(400).json({ error: err.message });
+        } else if (err.message === 'Username is already taken') {
+            res.status(400).json({ error: err.message });
+        } else {
+            res.status(500).json({ error: 'Internal server error' });
+        }
     }
 }
 

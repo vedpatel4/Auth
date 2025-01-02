@@ -31,7 +31,10 @@ Ensure that the following are installed on your local machine:
     PORT=3000
     DATABASE_URL=MONGO_URI=mongodb://localhost:27017/your_database_name
     ```
-
+5. Run the application:
+    ```bash
+    node src/index.js
+    ```
 
 
 
