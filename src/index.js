@@ -4,7 +4,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const userRouter = require("./routes/userRouters.js");
 const bodyParser = require('body-parser');
-require("dotenv").config({ path: '../.env' });
+require("dotenv").config();
 
 // Connect to the database
 connectDB();

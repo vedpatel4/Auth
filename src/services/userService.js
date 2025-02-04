@@ -5,11 +5,11 @@ const login = async (email, password) => {
     try {
         const user = await User.findOne({ email });
         if (!user) {
-            return null; // User not found
+            throw new Error('User not found');
         }
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return null; // Password does not match
+            throw new Error('Invalid credentials');
         }
         return user; // Login successful
     } catch (err) {

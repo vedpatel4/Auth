@@ -1,30 +1,33 @@
 const userService = require('../services/userService');
+const {matchedData} = require('express-validator');
 
 const login = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const validatedData = matchedData(req);
+        const { email, password } = validatedData;
         const user = await userService.login(email, password);
-        if (user) {
-            res.status(200).json({ message: 'Login successful', user });
-        } else {
-            res.status(401).json({ error: 'Invalid credentials' });
-        }
+        res.status(200).json({message: 'Login successful', user});
+
     } catch (err) {
-        res.status(500).json({ error: 'Internal server error' });
+        if (err.message === 'User not found' || err.message === 'Invalid credentials') {
+            res.status(401).json({ error: err.message });
+        } else {
+            res.status(500).json({ error: 'Internal server error' });
+        }
     }
 }
 
 const register = async (req, res) => {
     try {
-        const { email, password, username } = req.body;
+        const validatedData = matchedData(req);
+        const { email, password, username } = validatedData;
         const user = await userService.register(email, password, username);
         res.status(201).json({ message: 'User registered successfully', user });
     } catch (err) {
-        if (err.message === 'User already exists') {
+        if (err.message === 'User already exists' || err.message === 'Username is already taken') {
             res.status(400).json({ error: err.message });
-        } else if (err.message === 'Username is already taken') {
-            res.status(400).json({ error: err.message });
-        } else {
+        }
+        else {
             res.status(500).json({ error: 'Internal server error' });
         }
     }
